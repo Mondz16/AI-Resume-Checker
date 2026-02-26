@@ -16,7 +16,7 @@ function App() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:3000/upload",
+        "https://ai-resume-checker-bhj7.onrender.com/upload",
         formData,
         {
           responseType: "blob"
