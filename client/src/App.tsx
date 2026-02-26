@@ -137,7 +137,6 @@ function App() {
         {/* ── Footer ── */}
         <p className="footer-note">
           Your file is processed securely and never stored.{" "}
-          <a href="/privacy" aria-label="Read our privacy policy">Privacy policy ↗</a>
         </p>
       </div>
     </main>
