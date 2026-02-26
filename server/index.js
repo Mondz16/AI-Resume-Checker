@@ -17,7 +17,9 @@ const limiter = rateLimit({
 
 const app = express();
 app.use(limiter);
-app.use(cors());
+app.use(cors({
+  origin: "https://ai-resume-checker-woad.vercel.app"
+}));
 app.use(express.json());
 
 const openai = new OpenAI({
