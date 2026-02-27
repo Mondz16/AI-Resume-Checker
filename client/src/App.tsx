@@ -307,7 +307,6 @@ export default function App() {
           <ul className="footer-links" role="list">
             <li><a href="#how-it-works">How it works</a></li>
             <li><a href="#features">Features</a></li>
-            <li><a href="/privacy">Privacy</a></li>
           </ul>
 
           <p className="footer-copy">
