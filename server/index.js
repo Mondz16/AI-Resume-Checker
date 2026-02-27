@@ -126,7 +126,6 @@ function buildResumePDF(data) {
 
     doc.pipe(writeStream);
 
-    // ── Name ──
     doc
       .fontSize(22)
       .font("Helvetica-Bold")
@@ -135,7 +134,6 @@ function buildResumePDF(data) {
 
     doc.moveDown(0.3);
 
-    // ── Contact line ──
     const contactParts = [data.email, data.phone, data.location].filter(Boolean);
     if (data.linkedin) contactParts.push(data.linkedin);
 
@@ -147,19 +145,16 @@ function buildResumePDF(data) {
 
     drawRule(doc);
 
-    // ── Summary ──
     if (data.summary) {
       drawSectionHeading(doc, "Professional Summary");
       doc.fontSize(10).font("Helvetica").fillColor("#333333").text(data.summary, { lineGap: 3 });
       drawRule(doc);
     }
 
-    // ── Experience ──
     if (Array.isArray(data.experience) && data.experience.length) {
       drawSectionHeading(doc, "Career History");
 
       data.experience.forEach((job) => {
-        // Title row: position + company on left, dates on right
         const titleY = doc.y;
         doc
           .fontSize(11)
@@ -176,10 +171,8 @@ function buildResumePDF(data) {
           .fillColor("#888888")
           .text(`${job.startDate || ""} – ${job.endDate || "Present"}`, { align: "right" });
 
-        // Snap Y back so bullets are not double-spaced after the right-aligned date
         doc.moveDown(0.3);
 
-        // Bullet points (array preferred, fallback to plain description string)
         const bullets = Array.isArray(job.bullets) && job.bullets.length
           ? job.bullets
           : [job.description].filter(Boolean);
@@ -198,7 +191,6 @@ function buildResumePDF(data) {
       drawRule(doc);
     }
 
-    // ── Skills ──
     if (Array.isArray(data.skills) && data.skills.length) {
       drawSectionHeading(doc, "Skills");
       doc
@@ -209,7 +201,6 @@ function buildResumePDF(data) {
       drawRule(doc);
     }
 
-    // ── Education ──
     const educationList = Array.isArray(data.education)
       ? data.education
       : data.education
@@ -227,7 +218,6 @@ function buildResumePDF(data) {
       });
     }
 
-    // ── Certifications ──
     if (Array.isArray(data.certifications) && data.certifications.length) {
       drawRule(doc);
       drawSectionHeading(doc, "Certifications");
@@ -243,7 +233,6 @@ function buildResumePDF(data) {
   });
 }
 
-// Routes
 app.post("/upload", heavyLimiter, upload.single("resume"), async (req, res) => {
   const filePath = req.file?.path;
   let outputPath;
