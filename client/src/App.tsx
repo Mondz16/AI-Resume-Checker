@@ -94,7 +94,6 @@ export default function App() {
     <>
       <nav className="navbar" role="navigation" aria-label="Main navigation">
         <a className="nav-logo" href="/" aria-label="Resume Improver home">
-          <span className="nav-logo-icon" aria-hidden="true">✦</span>
           <span className="nav-logo-text">
             Resume<span>AI</span>
           </span>
@@ -288,7 +287,6 @@ export default function App() {
               </>
             ) : (
               <>
-                <span aria-hidden="true">✦</span>
                 Improve My Resume
               </>
             )}

@@ -13,7 +13,7 @@ const PDFDocument = require("pdfkit");
 const PORT = process.env.PORT || 3000;
 const UPLOADS_DIR = path.join(__dirname, "uploads");
 const MAX_FILE_SIZE_MB = 10;
-const ALLOWED_ORIGIN = "https://ai-resume-checker-woad.vercel.app";
+const ALLOWED_ORIGIN = "https://resume-ai-mondz16.vercel.app";
 
 if (!fs.existsSync(UPLOADS_DIR)) {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
