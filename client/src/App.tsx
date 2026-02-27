@@ -1,8 +1,62 @@
 import { useState } from "react";
 import axios from "axios";
-import './App.css';
+import "./App.css";
 
-function App() {
+const steps = [
+  {
+    number: "Step 01",
+    icon: "📄",
+    title: "Upload your PDF",
+    desc: "Drop in your existing resume — any format, any industry. We accept files up to 10 MB.",
+  },
+  {
+    number: "Step 02",
+    icon: "🧠",
+    title: "AI rewrites it",
+    desc: "GPT-4o analyses every section and rewrites for impact, clarity, and ATS compatibility.",
+  },
+  {
+    number: "Step 03",
+    icon: "⬇️",
+    title: "Download & apply",
+    desc: "Receive a polished, formatted PDF — ready to send to recruiters in seconds.",
+  },
+];
+
+const features = [
+  {
+    icon: "✦",
+    title: "ATS Keyword Optimisation",
+    desc: "Automatically surfaces the right industry keywords so your resume clears automated screening systems.",
+  },
+  {
+    icon: "📊",
+    title: "Impact-Focused Bullets",
+    desc: "Vague duties become quantified, action-driven achievements that hiring managers remember.",
+  },
+  {
+    icon: "🎯",
+    title: "Professional Summary",
+    desc: "A punchy 2–4 sentence opener tailored to your career level and target role.",
+  },
+  {
+    icon: "🔒",
+    title: "Private by Design",
+    desc: "Your file is processed in memory and permanently deleted after download. Nothing is stored.",
+  },
+  {
+    icon: "⚡",
+    title: "Under 30 Seconds",
+    desc: "From upload to improved PDF in the time it takes to refill your coffee.",
+  },
+  {
+    icon: "📑",
+    title: "Clean PDF Output",
+    desc: "A consistently formatted, recruiter-friendly PDF — no design skills needed.",
+  },
+];
+
+export default function App() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -14,6 +68,7 @@ function App() {
 
     try {
       setLoading(true);
+
       const response = await axios.post(
         "https://ai-resume-checker-bhj7.onrender.com/upload",
         formData,
@@ -35,112 +90,237 @@ function App() {
     }
   };
 
-  const features = [
-    "Rewrites bullet points for stronger impact",
-    "Optimises keywords for ATS screening",
-    "Improves clarity, tone, and formatting",
-    "Returns a polished, download-ready PDF",
-  ];
-
   return (
-    <main id="root" role="main">
-      <div className="card">
+    <>
+      <nav className="navbar" role="navigation" aria-label="Main navigation">
+        <a className="nav-logo" href="/" aria-label="Resume Improver home">
+          <span className="nav-logo-icon" aria-hidden="true">✦</span>
+          <span className="nav-logo-text">
+            Resume<span>AI</span>
+          </span>
+        </a>
 
-        {/* ── Header ── */}
-        <header className="header-group">
-          <div className="badge" aria-label="AI-powered tool">
-            <span className="badge-dot" aria-hidden="true" />
-            AI-Powered
+        <ul className="nav-links" role="list">
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li>
+            <a href="#upload" className="nav-cta" aria-label="Try the resume improver">
+              Try it free
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <section className="hero" aria-labelledby="hero-heading">
+        <div className="hero-glow" aria-hidden="true" />
+
+        <div className="hero-badge" role="status" aria-label="AI-powered tool">
+          <span className="badge-dot" aria-hidden="true" />
+          AI-Powered · Free to Try
+        </div>
+
+        <h1 id="hero-heading" className="hero-title">
+          Your resume,<br />
+          <span className="accent">rewritten by AI</span>
+        </h1>
+
+        <p className="hero-subtitle">
+          Upload your existing resume and get back a professionally rewritten,
+          ATS-optimised PDF — in under 30 seconds.
+        </p>
+
+        <div className="hero-actions">
+          <a href="#upload" className="btn-primary" aria-label="Start improving your resume">
+            <span aria-hidden="true">✦</span> Improve My Resume
+          </a>
+          <a href="#how-it-works" className="btn-ghost" aria-label="Learn how it works">
+            See how it works
+          </a>
+        </div>
+
+        <div className="scroll-cue" aria-hidden="true">
+          <span>Scroll</span>
+          <span className="scroll-arrow" />
+        </div>
+      </section>
+
+      <div className="stats-strip" role="region" aria-label="Key statistics">
+        <dl className="stats-inner">
+          <div className="stat-item">
+            <dt className="stat-label">Resumes improved</dt>
+            <dd className="stat-value">12<span>k+</span></dd>
           </div>
+          <div className="stat-item">
+            <dt className="stat-label">Average processing time</dt>
+            <dd className="stat-value">&lt;<span>30s</span></dd>
+          </div>
+          <div className="stat-item">
+            <dt className="stat-label">User satisfaction</dt>
+            <dd className="stat-value">98<span>%</span></dd>
+          </div>
+        </dl>
+      </div>
 
-          <h1 className="header">
-            Resume <span>Improver</span>
-          </h1>
+      <section
+        id="how-it-works"
+        className="section"
+        aria-labelledby="steps-heading"
+      >
+        <span className="section-eyebrow" aria-hidden="true">How it works</span>
+        <h2 id="steps-heading" className="section-title">
+          Three steps to a better resume
+        </h2>
+        <p className="section-body">
+          No account required. No templates to fill in. Just upload and download.
+        </p>
 
-          <p className="description">
-            Upload your existing resume and let AI rewrite it — sharper bullet
-            points, better keywords, and cleaner formatting — all exported as a
-            ready-to-send PDF in seconds.
+        <ol className="steps-grid" role="list" aria-label="Process steps">
+          {steps.map((step) => (
+            <li key={step.number} className="step-card">
+              <p className="step-number" aria-label={step.number}>{step.number}</p>
+              <span className="step-icon" aria-hidden="true">{step.icon}</span>
+              <h3 className="step-title">{step.title}</h3>
+              <p className="step-desc">{step.desc}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section
+        id="features"
+        className="features-section"
+        aria-labelledby="features-heading"
+      >
+        <div className="features-inner">
+          <span className="section-eyebrow" aria-hidden="true">Features</span>
+          <h2 id="features-heading" className="section-title">
+            Everything your resume needs
+          </h2>
+          <p className="section-body">
+            Built for job seekers at every level — from first-job applicants to
+            senior professionals changing industries.
+          </p>
+
+          <ul className="features-grid" role="list">
+            {features.map((feat) => (
+              <li key={feat.title} className="feature-card">
+                <div className="feature-card-icon" aria-hidden="true">
+                  {feat.icon}
+                </div>
+                <h3 className="feature-card-title">{feat.title}</h3>
+                <p className="feature-card-desc">{feat.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section
+        id="upload"
+        className="upload-section"
+        aria-labelledby="upload-heading"
+      >
+        <header className="upload-section-header">
+          <span className="section-eyebrow" aria-hidden="true">Get started</span>
+          <h2 id="upload-heading" className="section-title">
+            Ready to stand out?
+          </h2>
+          <p className="section-body">
+            Upload your PDF below. Our AI will rewrite it and return a polished,
+            download-ready version in seconds.
           </p>
         </header>
 
-        {/* ── Feature list ── */}
-        <ul className="features" aria-label="What we improve">
-          {features.map((feat) => (
-            <li key={feat} className="feature-item">
-              <span className="feature-icon" aria-hidden="true">✓</span>
-              {feat}
-            </li>
-          ))}
-        </ul>
+        <div className="upload-panel" role="region" aria-label="Resume upload">
+          <label className="file-label" htmlFor="resume-upload">
+            <span className="file-label-text">Your resume (PDF)</span>
 
-        <div className="divider" role="separator" />
+            <div
+              className={`file-drop-zone${file ? " has-file" : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label={
+                file
+                  ? `Selected: ${file.name}. Click to replace.`
+                  : "Click to select a PDF resume"
+              }
+            >
+              {file ? (
+                <>
+                  <span className="file-drop-icon" aria-hidden="true">📄</span>
+                  <span className="file-drop-selected">{file.name}</span>
+                  <span className="file-drop-secondary">
+                    {(file.size / 1024).toFixed(0)} KB · Click to replace
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="file-drop-icon" aria-hidden="true">⬆️</span>
+                  <span className="file-drop-primary">Click to upload your PDF</span>
+                  <span className="file-drop-secondary">PDF only · max 10 MB</span>
+                </>
+              )}
 
-        {/* ── File upload ── */}
-        <label className="file-label" htmlFor="resume-upload">
-          <span className="file-label-text">Your resume</span>
+              <input
+                id="resume-upload"
+                type="file"
+                accept=".pdf"
+                aria-label="Upload PDF resume"
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              />
+            </div>
+          </label>
 
-          <div
-            className={`file-drop-zone${file ? " has-file" : ""}`}
-            role="button"
-            aria-label={file ? `Selected file: ${file.name}` : "Click or drag to upload a PDF resume"}
-            tabIndex={0}
+          <button
+            className="upload-button"
+            type="button"
+            onClick={handleUpload}
+            disabled={!file || loading}
+            aria-busy={loading}
+            aria-label={
+              loading ? "Processing your resume…" : "Upload and improve resume"
+            }
           >
-            {file ? (
+            {loading ? (
               <>
-                <span className="file-drop-icon" aria-hidden="true">📄</span>
-                <span className="file-drop-selected">{file.name}</span>
-                <span className="file-drop-secondary">
-                  {(file.size / 1024).toFixed(0)} KB · Click to replace
-                </span>
+                <span className="spinner" aria-hidden="true" />
+                Processing…
               </>
             ) : (
               <>
-                <span className="file-drop-icon" aria-hidden="true">⬆️</span>
-                <span className="file-drop-primary">Click to upload your PDF</span>
-                <span className="file-drop-secondary">PDF only · max 10 MB</span>
+                <span aria-hidden="true">✦</span>
+                Improve My Resume
               </>
             )}
+          </button>
 
-            <input
-              id="resume-upload"
-              type="file"
-              accept=".pdf"
-              aria-label="Upload resume PDF"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            />
-          </div>
-        </label>
+          <p className="upload-reassurance" role="note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Your file is processed securely and never stored.
+          </p>
+        </div>
+      </section>
 
-        {/* ── Submit ── */}
-        <button
-          className="upload-button"
-          onClick={handleUpload}
-          disabled={!file || loading}
-          aria-busy={loading}
-          aria-label={loading ? "Processing your resume…" : "Upload and improve resume"}
-          type="button"
-        >
-          {loading ? (
-            <>
-              <span className="spinner" aria-hidden="true" />
-              Processing…
-            </>
-          ) : (
-            <>
-              <span aria-hidden="true">✦</span>
-              Improve My Resume
-            </>
-          )}
-        </button>
+      <footer className="site-footer" role="contentinfo">
+        <div className="footer-inner">
+          <span className="footer-logo">
+            Resume<span>AI</span>
+          </span>
 
-        {/* ── Footer ── */}
-        <p className="footer-note">
-          Your file is processed securely and never stored.{" "}
-        </p>
-      </div>
-    </main>
+          <ul className="footer-links" role="list">
+            <li><a href="#how-it-works">How it works</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="/privacy">Privacy</a></li>
+          </ul>
+
+          <p className="footer-copy">
+            © {new Date().getFullYear()} ResumeAI. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }
-
-export default App;
