@@ -59,6 +59,16 @@ const features = [
 export default function App() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [authName, setAuthName] = useState("");
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [user, setUser] = useState<any>( typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("user") || 'null') :  null);
+
+  const API_BASE = "https://ai-resume-checker-bhj7.onrender.com/api/upload";
 
   const handleUpload = async () => {
     if (!file) return;
@@ -69,10 +79,10 @@ export default function App() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        "https://ai-resume-checker-bhj7.onrender.com/api/upload",
-        formData,
-        { responseType: "blob" }
+      const response = await axios.post(`
+        ${API_BASE}/api/upload`, 
+        formData, 
+        { responseType: "blob",}
       );
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -90,6 +100,49 @@ export default function App() {
     }
   };
 
+  const handleAuthSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setAuthError(null);
+
+    if (!authEmail || !authPassword || (!isLoginMode && !authName)) {
+      setAuthError("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      setAuthLoading(true);
+      const endpoint = isLoginMode ? "/auth/login" : "/auth/register";
+      const payload = isLoginMode
+        ? { email: authEmail, password: authPassword }
+        : { name: authName, email: authEmail, password: authPassword };
+
+      const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
+
+      if (data?.token) {
+        localStorage.setItem("user", JSON.stringify(data));
+      }
+
+      setUser(data);
+      setShowAuthModal(false);
+      setAuthName("");
+      setAuthEmail("");
+      setAuthPassword("");
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Something went wrong. Please try again.";
+      setAuthError(message);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
   return (
     <>
       <nav className="navbar" role="navigation" aria-label="Main navigation">
@@ -100,14 +153,48 @@ export default function App() {
         </a>
 
         <ul className="nav-links" role="list">
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#features">Features</a></li>
           <li>
-            <a href="#upload" className="nav-cta" aria-label="Try the resume improver">
+            <a href="#how-it-works">How it works</a>
+          </li>
+          <li>
+            <a href="#features">Features</a>
+          </li>
+          <li>
+            <a
+              href="#upload"
+              className="nav-cta"
+              aria-label="Try the resume improver"
+            >
               Try it free
             </a>
           </li>
         </ul>
+
+        <div className="nav-auth">
+          {user ? (
+            <>
+              <span className="nav-user">Hi, {user.name}</span>
+              <button
+                type="button"
+                className="nav-auth-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="nav-auth-button"
+              onClick={() => {
+                setIsLoginMode(true);
+                setShowAuthModal(true);
+              }}
+            >
+              Login / Register
+            </button>
+          )}
+        </div>
       </nav>
 
       <section className="hero" aria-labelledby="hero-heading">
@@ -273,7 +360,10 @@ export default function App() {
           <button
             className="upload-button"
             type="button"
-            onClick={handleUpload}
+            onClick={user ? () => handleUpload() : () => {
+                setIsLoginMode(true);
+                setShowAuthModal(true);
+            }}
             disabled={!file || loading}
             aria-busy={loading}
             aria-label={
@@ -313,6 +403,110 @@ export default function App() {
           </p>
         </div>
       </footer>
+
+      {showAuthModal && (
+        <div
+          className="auth-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="auth-modal-title"
+        >
+          <div className="auth-modal">
+            <header className="auth-modal-header">
+              <button
+                type="button"
+                className="auth-modal-close"
+                onClick={() => setShowAuthModal(false)}
+                aria-label="Close authentication dialog"
+              >
+                ×
+              </button>
+            </header>
+
+            <div className="auth-modal-toggle">
+              <button
+                type="button"
+                className={`auth-toggle-button${
+                  isLoginMode ? " active" : ""
+                }`}
+                onClick={() => setIsLoginMode(true)}
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                className={`auth-toggle-button${
+                  !isLoginMode ? " active" : ""
+                }`}
+                onClick={() => setIsLoginMode(false)}
+              >
+                Register
+              </button>
+              
+            </div>
+
+            <form className="auth-form" onSubmit={handleAuthSubmit}>
+              {!isLoginMode && (
+                <div className="auth-field">
+                  <label htmlFor="auth-name">Name</label>
+                  <input
+                    id="auth-name"
+                    type="text"
+                    value={authName}
+                    onChange={(e) => setAuthName(e.target.value)}
+                    placeholder="Your name"
+                    required={!isLoginMode}
+                  />
+                </div>
+              )}
+
+              <div className="auth-field">
+                <label htmlFor="auth-email">Email</label>
+                <input
+                  id="auth-email"
+                  type="email"
+                  value={authEmail}
+                  onChange={(e) => setAuthEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+
+              <div className="auth-field">
+                <label htmlFor="auth-password">Password</label>
+                <input
+                  id="auth-password"
+                  type="password"
+                  value={authPassword}
+                  onChange={(e) => setAuthPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+
+              {authError && (
+                <p className="auth-error" role="alert">
+                  {authError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="auth-submit"
+                disabled={authLoading}
+              >
+                {authLoading
+                  ? isLoginMode
+                    ? "Logging in..."
+                    : "Creating account..."
+                  : isLoginMode
+                  ? "Login"
+                  : "Register"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
