@@ -32,6 +32,7 @@ app.use(
     standardHeaders: true,
     legacyHeaders: false,
     message: { error: "Too many requests. Please try again later." },
+    validate: {xForwardedForHeader: false}
   }),
 );
 
