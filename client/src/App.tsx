@@ -70,7 +70,7 @@ export default function App() {
       setLoading(true);
 
       const response = await axios.post(
-        "https://ai-resume-checker-bhj7.onrender.com/upload",
+        "https://ai-resume-checker-bhj7.onrender.com/api/upload",
         formData,
         { responseType: "blob" }
       );
@@ -283,7 +283,6 @@ export default function App() {
             {loading ? (
               <>
                 <span className="spinner" aria-hidden="true" />
-                Processing…
               </>
             ) : (
               <>
