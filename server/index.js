@@ -17,12 +17,11 @@ mongoose.connect(process.env.MONGODB_URI)
 
 const app = express();
 
-app.use(cors());
-// app.use(
-//   cors({
-//     origin: ALLOWED_ORIGIN,
-//   }),
-// );
+app.use(
+  cors({
+    origin: ALLOWED_ORIGIN,
+  }),
+);
 
 app.use(express.json());
 
