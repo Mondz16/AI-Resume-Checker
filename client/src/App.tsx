@@ -68,7 +68,7 @@ export default function App() {
   const [authError, setAuthError] = useState<string | null>(null);
   const [user, setUser] = useState<any>( typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("user") || 'null') :  null);
 
-  const API_BASE = "https://ai-resume-checker-bhj7.onrender.com/";
+  const API_BASE = "https://ai-resume-checker-bhj7.onrender.com";
 
   const handleUpload = async () => {
     if (!file) return;
