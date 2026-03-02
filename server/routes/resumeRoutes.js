@@ -4,6 +4,7 @@ import { UPLOADS_DIR } from '../helper/resumeHelpers.js';
 import multer from 'multer';
 import rateLimit from 'express-rate-limit'
 import fs from 'fs';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 const MAX_FILE_SIZE_MB = 10;
@@ -31,7 +32,7 @@ const heavyLimiter = rateLimit({
   message: { error: "Too many upload requests. Please wait before trying again." },
 });
 
-router.post('/upload', heavyLimiter , upload.single("resume"), uploadFile);
+router.post('/upload' ,heavyLimiter , upload.single("resume"), uploadFile);
 
 
 export default router;
