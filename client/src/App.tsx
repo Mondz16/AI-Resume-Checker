@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Check } from "lucide-react";
 import axios from "axios";
 import "./App.css";
 import { sileo, Toaster } from "sileo";
@@ -60,7 +61,11 @@ const features = [
 const showSucessToast = (title: string, description: string, duration: number) => {
   sileo.success({
     title,
-    description,
+    description: (
+      <Check className="text-[#4f8ef7]">
+        {description}
+      </Check>
+    ),
     duration,
     fill: "#171717",
     styles: {
