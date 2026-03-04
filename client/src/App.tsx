@@ -95,7 +95,8 @@ export default function App() {
       link.remove();
       sileo.success({
         title: "Resume Improved!",
-        description: "Your file will be downloaded shortly."
+        description: "Your file will be downloaded shortly.",
+        fill: "#171717",
       });
     } catch (error) {
       console.error(error);
@@ -124,9 +125,9 @@ export default function App() {
       const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
 
       if(isLoginMode){
-        sileo.success({title: "Login in Successfully.", description: `Welcome back, ${data.name}!`});
+        sileo.success({title: "Login in Successfully.", description: `Welcome back, ${data.name}!`, fill: "#171717"});
       } else {
-        sileo.success({title: "Account Created Successfully.", description: `Welcome, ${data.name}!`});
+        sileo.success({title: "Account Created Successfully.", description: `Welcome, ${data.name}!`, fill: "#171717",});
       }
       if (data?.token) {
         localStorage.setItem("user", JSON.stringify(data));
@@ -149,7 +150,7 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    sileo.success({title: "You have been logged out."});
+    sileo.success({title: "You have been logged out.", fill: "#171717"});
     localStorage.removeItem("user");
     setUser(null);
   };
