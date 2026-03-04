@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./App.css";
+import {sileo, Toaster} from 'sileo';
 
 const steps = [
   {
@@ -92,9 +93,13 @@ export default function App() {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      sileo.success({
+        title: "Resume Improved!",
+        description: "Your file will be downloaded shortly."
+      });
     } catch (error) {
       console.error(error);
-      alert("Upload failed. Please try again.");
+      sileo.error({title: "Upload failed. Please try again."});
     } finally {
       setLoading(false);
     }
@@ -118,6 +123,11 @@ export default function App() {
 
       const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
 
+      if(isLoginMode){
+        sileo.success({title: "Login in Successfully.", description: `Welcome back, ${data.name}!`});
+      } else {
+        sileo.success({title: "Account Created Successfully.", description: `Welcome, ${data.name}!`});
+      }
       if (data?.token) {
         localStorage.setItem("user", JSON.stringify(data));
       }
@@ -139,12 +149,14 @@ export default function App() {
   };
 
   const handleLogout = () => {
+    sileo.success({title: "You have been logged out."});
     localStorage.removeItem("user");
     setUser(null);
   };
 
   return (
     <>
+      <Toaster position="top-right" />
       <nav className="navbar" role="navigation" aria-label="Main navigation">
         <a className="nav-logo" href="/" aria-label="Resume Improver home">
           <span className="nav-logo-text">
@@ -206,18 +218,18 @@ export default function App() {
         </div>
 
         <h1 id="hero-heading" className="hero-title">
-          Your resume,<br />
+          Your résumé,<br />
           <span className="accent">rewritten by AI</span>
         </h1>
 
         <p className="hero-subtitle">
-          Upload your existing resume and get back a professionally rewritten,
+          Upload your existing résumé and get back a professionally rewritten,
           ATS-optimised PDF — in under 30 seconds.
         </p>
 
         <div className="hero-actions">
           <a href="#upload" className="btn-primary" aria-label="Start improving your resume">
-            <span aria-hidden="true">✦</span> Improve My Resume
+            <span aria-hidden="true">✦</span> Improve My Résumé
           </a>
           <a href="#how-it-works" className="btn-ghost" aria-label="Learn how it works">
             See how it works
