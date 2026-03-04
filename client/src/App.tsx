@@ -58,17 +58,11 @@ const features = [
   },
 ];
 
-const showSucessToast = (title: string, description: string, duration: number) => {
+const showSucessToast = (title: string, duration: number) => {
   sileo.success({
     title,
-    description,
     duration,
-    icon: <Check className="size-3.5 text-[#4f8ef7]"/>,
     fill: "#171717",
-    styles: {
-      title: "text-[#4f8ef7]!",
-      description: "text-[#4f8ef7]!",
-    },
   });
 };
 
@@ -118,7 +112,7 @@ export default function App() {
       document.body.appendChild(link);
       link.click();
       link.remove();
-      showSucessToast("Resume Improved!", "Your file will be downloaded shortly.", 5000);
+      showSucessToast("Your file will be downloaded shortly.", 3000);
     } catch (error) {
       console.error(error);
       sileo.error({ title: "Upload failed. Please try again." });
@@ -142,9 +136,9 @@ export default function App() {
         : { name: authName, email: authEmail, password: authPassword };
       const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
       if (isLoginMode) {
-        showSucessToast("Login in Successfully.", `Welcome back, ${data.name}!`, 5000);
+        showSucessToast(`Welcome back, ${data.name}!`, 3000);
       } else {
-        showSucessToast("Account Created Successfully.", `Welcome, ${data.name}!`, 5000);
+        showSucessToast("Account Created Successfully.", 3000);
       }
       if (data?.token) {
         localStorage.setItem("user", JSON.stringify(data));
