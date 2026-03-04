@@ -64,8 +64,8 @@ const showSucessToast = (title: string, description: string, duration: number) =
     duration,
     fill: "#171717",
     styles: {
-      title: "text-blue-500/50!",
-      description: "text-blue-500/50!",
+      title: "text-[#4f8ef7]!",
+      description: "text-[#4f8ef7]!",
       badge: "bg-blue/20!",
     },
   });
