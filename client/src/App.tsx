@@ -57,6 +57,19 @@ const features = [
   },
 ];
 
+const showSucessToast = (title:string, description:string, duration:number) => {
+        sileo.success({
+          title: title, 
+          description: description, 
+          duration: duration,
+          fill: "#171717", 
+          styles: {
+          title: "#4f8ef7",
+          description: "#4f8ef7",
+          badge: "#4f8ef7"
+        }});
+}
+
 export default function App() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -93,13 +106,10 @@ export default function App() {
       document.body.appendChild(link);
       link.click();
       link.remove();
-      sileo.success({
-        title: "Resume Improved!",
-        description: "Your file will be downloaded shortly.",
-        fill: "#171717", 
-        styles: {
-          description: "text-white/75!"
-      }});
+      showSucessToast(
+        "Resume Improved!",
+        "Your file will be downloaded shortly.",
+        5000);
     } catch (error) {
       console.error(error);
       sileo.error({title: "Upload failed. Please try again."});
@@ -127,16 +137,11 @@ export default function App() {
       const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
 
       if(isLoginMode){
-        sileo.success({title: "Login in Successfully.", description: `Welcome back, ${data.name}!`, fill: "#171717", 
-        styles: {
-          description: "text-white/75!"
-        }});
+        showSucessToast("Login in Successfully.",`Welcome back, ${data.name}!`, 5000);
       } else {
-        sileo.success({title: "Account Created Successfully.", description: `Welcome, ${data.name}!`, fill: "#171717", 
-        styles: {
-          description: "text-white/75!"
-        }});
+        showSucessToast("Account Created Successfully.", `Welcome, ${data.name}!`, 5000);
       }
+
       if (data?.token) {
         localStorage.setItem("user", JSON.stringify(data));
       }
@@ -158,7 +163,7 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    sileo.success({title: "You have been logged out.", fill: "#171717"});
+    sileo.success({title: "You have been logged out.", fill: "#171717", duration:3000});
     localStorage.removeItem("user");
     setUser(null);
   };
