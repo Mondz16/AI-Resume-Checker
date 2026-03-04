@@ -96,8 +96,10 @@ export default function App() {
       sileo.success({
         title: "Resume Improved!",
         description: "Your file will be downloaded shortly.",
-        fill: "#171717",
-      });
+        fill: "#171717", 
+        styles: {
+          description: "text-white/75!"
+      }});
     } catch (error) {
       console.error(error);
       sileo.error({title: "Upload failed. Please try again."});
@@ -125,9 +127,15 @@ export default function App() {
       const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
 
       if(isLoginMode){
-        sileo.success({title: "Login in Successfully.", description: `Welcome back, ${data.name}!`, fill: "#171717"});
+        sileo.success({title: "Login in Successfully.", description: `Welcome back, ${data.name}!`, fill: "#171717", 
+        styles: {
+          description: "text-white/75!"
+        }});
       } else {
-        sileo.success({title: "Account Created Successfully.", description: `Welcome, ${data.name}!`, fill: "#171717",});
+        sileo.success({title: "Account Created Successfully.", description: `Welcome, ${data.name}!`, fill: "#171717", 
+        styles: {
+          description: "text-white/75!"
+        }});
       }
       if (data?.token) {
         localStorage.setItem("user", JSON.stringify(data));
