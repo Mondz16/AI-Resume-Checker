@@ -61,12 +61,9 @@ const features = [
 const showSucessToast = (title: string, description: string, duration: number) => {
   sileo.success({
     title,
-    description: (
-      <Check className="text-[#4f8ef7]">
-        {description}
-      </Check>
-    ),
+    description,
     duration,
+    icon: <Check className="size-3.5 text-[#4f8ef7]"/>,
     fill: "#171717",
     styles: {
       title: "text-[#4f8ef7]!",
