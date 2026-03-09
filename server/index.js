@@ -9,7 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const ALLOWED_ORIGIN = "https://resume-ai-mondz16.vercel.app";
+const ALLOWED_ORIGIN = "https://resume-ai-mondz.vercel.app";
 
 mongoose
 	.connect(process.env.MONGODB_URI)
