@@ -8,19 +8,21 @@
       }
 
       .st1 {
-        fill: #0a0b0e;
-      }
-
-      .st2 {
-        fill: #4f8ff7;
+        fill: #0098ff;
       }
     </style>
-    <radialGradient id="radial-gradient" cx="15.9" cy="16" fx="15.9" fy="16" r="15.9" gradientUnits="userSpaceOnUse">
-      <stop offset=".8" stop-color="#4f8ff6"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    <radialGradient id="radial-gradient" cx="15.9" cy="15.9" fx="15.9" fy="15.9" r="10.4" gradientTransform="translate(0 31.9) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".7" stop-color="#00e1ff"/>
+      <stop offset=".7" stop-color="#06bdd5"/>
+      <stop offset=".8" stop-color="#0d93a6"/>
+      <stop offset=".8" stop-color="#146f7c"/>
+      <stop offset=".8" stop-color="#19525b"/>
+      <stop offset=".9" stop-color="#1d3b41"/>
+      <stop offset=".9" stop-color="#202b2e"/>
+      <stop offset="1" stop-color="#222223"/>
+      <stop offset="1" stop-color="#231f20"/>
     </radialGradient>
   </defs>
-  <circle class="st0" cx="15.9" cy="16" r="15.9"/>
-  <circle class="st1" cx="15.9" cy="16" r="13.3"/>
-  <circle class="st2" cx="15.9" cy="16" r="11.1"/>
+  <circle class="st0" cx="15.9" cy="16" r="10.4"/>
+  <circle class="st1" cx="15.9" cy="16" r="8.7"/>
 </svg>
