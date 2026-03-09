@@ -380,7 +380,7 @@ export default function App() {
 				</h1>
 
 				<p className="text-[clamp(0.95rem,2vw,1.1rem)] text-[#7c8399] max-w-[500px] leading-[1.75] font-light mb-11 animate-fade-up-2">
-					Upload your existing résumé and get back a professionally rewritten,
+					Upload your existing resume and get back a professionally rewritten,
 					ATS-optimised PDF — in under 30 seconds.
 				</p>
 
@@ -390,7 +390,7 @@ export default function App() {
 						className="inline-flex items-center gap-2 px-8 py-[0.85rem] font-sora text-[0.9rem] font-semibold text-white no-underline bg-[#4f8ef7] rounded-[10px] transition-all duration-200 shadow-[0_4px_24px_rgba(79,142,247,0.3)] hover:bg-[#3570d4] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(79,142,247,0.42)]"
 						aria-label="Start improving your resume"
 					>
-						<span aria-hidden="true">✦</span> Improve My Résumé
+						<span aria-hidden="true">✦</span> Improve My Resume
 					</a>
 					<a
 						href="#how-it-works"
