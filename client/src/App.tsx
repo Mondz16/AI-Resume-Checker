@@ -93,7 +93,8 @@ export default function App() {
 			: null,
 	);
 
-	const API_BASE = "https://ai-resume-checker-bhj7.onrender.com";
+	// const API_BASE = "https://ai-resume-checker-bhj7.onrender.com";
+	const API_BASE = "http://localhost:3000";
 
 	const handleUpload = async () => {
 		if (!file) return;
@@ -133,16 +134,18 @@ export default function App() {
 			const payload = isLoginMode
 				? { email: authEmail, password: authPassword }
 				: { name: authName, email: authEmail, password: authPassword };
-			const { data } = await axios.post(`${API_BASE}${endpoint}`, payload);
+			const {data} = await axios.post(`${API_BASE}${endpoint}`, payload);
+			const responseData = data?.data;
+			
 			if (isLoginMode) {
-				showSucessToast(`Welcome back, ${data.name}!`, 3000);
+				showSucessToast(`Welcome back, ${responseData.name}!`, 3000);
 			} else {
 				showSucessToast("Account Created Successfully.", 3000);
 			}
-			if (data?.token) {
-				localStorage.setItem("user", JSON.stringify(data));
+			if (responseData?.token) {
+				localStorage.setItem("user", JSON.stringify(responseData));
 			}
-			setUser(data);
+			setUser(responseData);
 			setShowAuthModal(false);
 			setAuthName("");
 			setAuthEmail("");

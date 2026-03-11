@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
@@ -6,7 +8,6 @@ import mongoose from "mongoose";
 import resumeRouter from "./routes/resumeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
-dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const ALLOWED_ORIGIN = "https://resume-ai-mondz.vercel.app";
@@ -18,11 +19,13 @@ mongoose
 
 const app = express();
 
-app.use(
-	cors({
-		origin: ALLOWED_ORIGIN,
-	}),
-);
+app.use(cors());
+
+// app.use(
+// 	cors({
+// 		origin: ALLOWED_ORIGIN,
+// 	}),
+// );
 
 app.use(express.json());
 

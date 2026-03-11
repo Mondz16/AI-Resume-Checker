@@ -1,0 +1,112 @@
+stages:
+  - test
+  - build
+  - deploy
+
+# Global defaults
+default:
+  image: node:20-bullseye
+  interruptible: true
+  cache:
+    key:
+      files:
+        - client/package-lock.json
+        - server/package-lock.json
+    paths:
+      - client/.npm/
+      - server/.npm/
+    policy: pull-push
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+variables:
+  NODE_ENV: "production"
+  NPM_CONFIG_CACHE: ".npm"
+
+# -----------------------
+# Test / Quality
+# -----------------------
+
+client:lint:
+  stage: test
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+  before_script:
+    - cd client
+  script:
+    - npm ci
+    - npm run lint
+
+server:check:
+  stage: test
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+  before_script:
+    - cd server
+  script:
+    - npm ci
+    # Backend currently has no test runner (npm test exits 1).
+    # This job provides a minimal smoke check: can Node parse/resolve entrypoint.
+    - node --check index.js
+
+# -----------------------
+# Build
+# -----------------------
+
+client:build:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+  before_script:
+    - cd client
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    when: on_success
+    expire_in: 7 days
+    paths:
+      - client/dist/
+
+# -----------------------
+# Deploy
+# -----------------------
+
+# Deploy frontend to Vercel on main branch.
+# Required CI variables:
+# - VERCEL_TOKEN
+# - VERCEL_ORG_ID
+# - VERCEL_PROJECT_ID
+deploy:client:vercel:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  before_script:
+    - cd client
+  script:
+    - npm ci
+    - npx vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
+    - npx vercel@latest build --prod --token "$VERCEL_TOKEN"
+    - npx vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
+
+# Trigger backend deployment on Render using a Deploy Hook URL.
+# Required CI variable:
+# - RENDER_DEPLOY_HOOK_URL   (from Render -> Deploy Hooks)
+deploy:server:render:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  image: curlimages/curl:8.12.1
+  script:
+    - |
+      if [ -z "${RENDER_DEPLOY_HOOK_URL}" ]; then
+        echo "Missing required CI variable: RENDER_DEPLOY_HOOK_URL"
+        exit 1
+      fi
+      curl -fsSL -X POST "${RENDER_DEPLOY_HOOK_URL}"

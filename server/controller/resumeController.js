@@ -6,12 +6,9 @@ import {
 } from "../helper/resumeHelpers.js";
 import { PDFParse } from "pdf-parse";
 import { OpenAI } from "openai/client.js";
-import dotenv from "dotenv";
-dotenv.config();
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export const uploadFile = async (req, res) => {
+	const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 	const filePath = req.file?.path;
 	let outputPath;
 
