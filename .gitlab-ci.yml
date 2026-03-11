@@ -23,7 +23,6 @@ workflow:
     - if: $CI_COMMIT_TAG
 
 variables:
-  NODE_ENV: "production"
   NPM_CONFIG_CACHE: ".npm"
 
 # -----------------------
@@ -38,7 +37,7 @@ client:lint:
   before_script:
     - cd client
   script:
-    - npm ci
+    - npm ci --include=dev
     - npm run lint
 
 server:check:
@@ -49,7 +48,7 @@ server:check:
   before_script:
     - cd server
   script:
-    - npm ci
+    - npm ci --include=dev
     # Backend currently has no test runner (npm test exits 1).
     # This job provides a minimal smoke check: can Node parse/resolve entrypoint.
     - node --check index.js
@@ -66,7 +65,7 @@ client:build:
   before_script:
     - cd client
   script:
-    - npm ci
+    - npm ci --include=dev
     - npm run build
   artifacts:
     when: on_success
@@ -90,7 +89,7 @@ deploy:client:vercel:
   before_script:
     - cd client
   script:
-    - npm ci
+    - npm ci --include=dev
     - npx vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
     - npx vercel@latest build --prod --token "$VERCEL_TOKEN"
     - npx vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
@@ -106,7 +105,7 @@ deploy:server:render:
   script:
     - |
       if [ -z "${RENDER_DEPLOY_HOOK_URL}" ]; then
-        echo "Missing required CI variable: RENDER_DEPLOY_HOOK_URL"
+        echo "Missing required CI variable: RENDER_DEPLOY_HOOK_URL"`
         exit 1
       fi
       curl -fsSL -X POST "${RENDER_DEPLOY_HOOK_URL}"
