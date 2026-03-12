@@ -19,13 +19,11 @@ mongoose
 
 const app = express();
 
-app.use(cors());
-
-// app.use(
-// 	cors({
-// 		origin: ALLOWED_ORIGIN,
-// 	}),
-// );
+app.use(
+	cors({
+		origin: ALLOWED_ORIGIN,
+	}),
+);
 
 app.use(express.json());
 
