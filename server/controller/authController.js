@@ -22,7 +22,7 @@ export const register = asyncHandler(async (req, res) =>{
 
 		console.log(newUser);
 		const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-			expiresIn: "7D",
+			expiresIn: "1d",
 		});
 
 
@@ -55,7 +55,7 @@ export const login = async (req, res) => {
 		}
 
 		const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-			expiresIn: "7D",
+			expiresIn: "1d",
 		});
 
 		
