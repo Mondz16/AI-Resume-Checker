@@ -93,8 +93,8 @@ export default function App() {
 			: null,
 	);
 
-	// const API_BASE = "https://ai-resume-checker-bhj7.onrender.com";
-	const API_BASE = "http://localhost:3000";
+	const API_BASE = "https://ai-resume-checker-bhj7.onrender.com";
+	// const API_BASE = "http://localhost:3000";
 
 	const handleUpload = async () => {
 		if (!file) return;
